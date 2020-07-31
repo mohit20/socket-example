@@ -57,7 +57,7 @@
             const messageContainer = document.getElementById('message-container')
             const messageForm = document.getElementById('send-container')
             const messageInput = document.getElementById('message-input')
-
+            var receiver_name;
             var name = prompt('What\'s your username?');
             appendMessage('You joined')
             socket.emit('new-user', name)
@@ -76,10 +76,12 @@
 
             messageForm.addEventListener('submit', e => {
               e.preventDefault()
+              receiver_name = prompt('who to send the message?');
               const message = messageInput.value
               appendMessage(`You: ${message}`)
-              socket.emit('send-chat-message', message)
+              socket.emit('send-chat-message', {message:message, receiver_name:receiver_name})
               messageInput.value = ''
+              receiver_name = ''
             })
 
             function appendMessage(message) {
@@ -87,16 +89,7 @@
               messageElement.innerText = message
               messageContainer.append(messageElement)
             }
-            /*var username = prompt('What\'s your username?');
-            socket.emit('little_newbie', username);
             
-            socket.on('message', function(message) {
-                alert('The server has a message for you: ' + message);
-            });
-
-            document.getElementById("poke").onclick = function() {
-                socket.emit('message', 'Hi server, how are you?');
-            };*/
         </script>
     </body>
 </html>
